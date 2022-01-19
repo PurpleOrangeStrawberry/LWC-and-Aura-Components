@@ -3,31 +3,35 @@ public with sharing class ContactTriggerHandlerTest {
 
     @TestSetup
     static void setup(){
-        Program__c programOne = new Program__c();
-        Program__c programTwo = new Program__c();
+        List<Program__c> programList = new List<Program__c>();
+        Program__c programOne = new Program__c(Name = 'TestProgramOne');
+        Program__c programTwo = new Program__c(Name = 'TestProgramTwo');
+        Program__c programUpdate = new Program__c(Name = 'UpdateProgram');
+        programList.add(programOne);
+        programList.add(programTwo);
+        programList.add(programUpdate);
+        insert programList;
 
-        programOne.Name = 'TestProgramOne';
-        programTwo.Name = 'TestProgramTwo';
-
-        insert programOne;
-        insert programTwo;
-
+        //Test insert
+        List<Contact> contactList = new List<Contact>();
         Contact contOne = new Contact(Lastname='TestContactOne', Current_Program__c = programOne.Id);
         Contact contTwo = new Contact(Lastname='TestContactTwo', Current_Program__c = programTwo.Id);
+        contactList.add(contOne);
+        contactList.add(contTwo);
+        insert contactList;
 
-        insert contOne;
-        insert contTwo;
+        //Test update
+        contOne.Current_Program__c = programUpdate.Id;
+        update contactList;
     }
 
     @isTest 
     static void testInsertCurrentProgramName(){
-    
         List<Contact> contactList = [SELECT Id, Current_Program__c, Current_Program_Name__c FROM Contact];
         Set<Id> prIds = new Set<Id>();
         for (Contact cn : contactList){
             prIds.add(cn.Current_Program__c);     
         }
-
         
         Map<Id, Program__c> programs = new Map<Id, Program__c>([SELECT Id, Name FROM Program__c WHERE Id IN :prIds]);
         for (Contact conts : contactList){
@@ -37,20 +41,6 @@ public with sharing class ContactTriggerHandlerTest {
     
     @isTest 
     static void testUpdateCurrentProgramName(){
-        Program__c programBeforeUpdate = new Program__c();
-        Program__c programAfterUpdate = new Program__c();
-        programBeforeUpdate.Name = 'TestBeforeUpdateProgram';
-        programAfterUpdate.Name = 'TestAfterUpdateProgram';
-        insert programBeforeUpdate;
-        insert programAfterUpdate;
-
-        Contact contUpdate = new Contact(Lastname='TestContactUpdate', Current_Program__c = programBeforeUpdate.Id);
-        insert contUpdate;
-
-        contUpdate.Current_Program__c = programAfterUpdate.Id;
-        update contUpdate;
-
-
         List<Contact> contactList = [SELECT Id, Current_Program__c, Current_Program_Name__c FROM Contact];
         Set<Id> prIds = new Set<Id>();
         for (Contact cn : contactList){
