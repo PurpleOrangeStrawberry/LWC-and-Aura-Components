@@ -15,7 +15,7 @@ public without sharing class ServiceTriggerHandler extends TriggerHandler{
         Set<Id> serviceContactIds = new Set<Id>();
 
         for (Service__c srv: services){
-            if(servicesOld == null || (srv.Service_Contact__c != null && 
+            if(servicesOld == null || (srv.Service_Contact__c != null &&
                 (srv.Service_Contact__c != servicesOld.get(srv.Id).Service_Contact__c ||
                 srv.Service_Date__c != servicesOld.get(srv.Id).Service_Date__c))){
 
@@ -29,8 +29,8 @@ public without sharing class ServiceTriggerHandler extends TriggerHandler{
             for (Service__c srv: services){
                 Contact contObj = contMap.get(srv.Service_Contact__c);
 
-                if(servicesOld == null || 
-                (srv.Service_Contact__c != null && (srv.Service_Contact__c != servicesOld.get(srv.Id).Service_Contact__c ||
+                if(servicesOld == null || (srv.Service_Contact__c != null &&
+                (srv.Service_Contact__c != servicesOld.get(srv.Id).Service_Contact__c ||
                 srv.Service_Date__c != servicesOld.get(srv.Id).Service_Date__c))){
                     if ((contObj.Last_Service_Date__c < srv.Service_Date__c) || contObj.Last_Service_Date__c == null){
                         contObj.Last_Service_Date__c = srv.Service_Date__c;
@@ -38,7 +38,7 @@ public without sharing class ServiceTriggerHandler extends TriggerHandler{
                     }
                 }
             }  
+            update contList;
         }
-        
     }
 }
