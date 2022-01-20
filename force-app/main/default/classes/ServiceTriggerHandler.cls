@@ -38,7 +38,6 @@ public without sharing class ServiceTriggerHandler extends TriggerHandler{
                     }
                 }
             }  
-            update contList;
         }
         
     }
