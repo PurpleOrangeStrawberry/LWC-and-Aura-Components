@@ -12,16 +12,19 @@ public without sharing class ContactTriggerHandler extends TriggerHandler{
     //Main funcs
     public static void setCurrentProgramName(List<Contact> contactList, Map<Id, Contact> contactOld){    
         Set<Id> prIds = new Set<Id>();
-        for (Contact cont : contactList){
-            if (Trigger.old == null || cont.Current_Program__c != contactOld.get(cont.Id).Current_Program__c){
-                prIds.add(cont.Current_Program__c);    
+        for (Contact conts : contactList){
+            if (Trigger.old == null || conts.Current_Program__c != contactOld.get(conts.Id).Current_Program__c){
+                prIds.add(conts.Current_Program__c);    
             }
         }
 
-        if(prIds != null){
+        if(prIds != null && prIds.size() > 0){
             Map<Id, Program__c> programs = new Map<Id, Program__c>([SELECT Id, Name FROM Program__c WHERE Id IN :prIds]);
+            System.debug(programs);
             for (Contact conts : contactList){
-                conts.Current_Program_Name__c = programs.get(conts.Current_Program__c).Name;
+                if (Trigger.old == null || conts.Current_Program__c != contactOld.get(conts.Id).Current_Program__c){
+                    conts.Current_Program_Name__c = programs.get(conts.Current_Program__c).Name;  
+                }
             } 
         }   
     }
