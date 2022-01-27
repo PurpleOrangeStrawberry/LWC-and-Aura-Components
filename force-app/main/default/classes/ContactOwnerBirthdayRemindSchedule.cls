@@ -1,7 +1,5 @@
 global with sharing class ContactOwnerBirthdayRemindSchedule implements Schedulable {
 
-    private final String JOB_NAME = 'Three month to birthday remind';
-
     global void execute(SchedulableContext ctx) {
         if (ctx != null){
             List<Contact> contBirth = [SELECT Id, Name, Birthdate, Owner.Email FROM Contact WHERE Is_Three_Months_Before_Birthday__c = true];
