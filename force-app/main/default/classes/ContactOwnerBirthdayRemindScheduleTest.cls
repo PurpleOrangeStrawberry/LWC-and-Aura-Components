@@ -1,5 +1,5 @@
 @isTest
-public with sharing class ContactOwnerBirthdayRemindTest{
+public with sharing class ContactOwnerBirthdayRemindScheduleTest{
 
     @TestSetup
     static void setup(){
@@ -23,7 +23,7 @@ public with sharing class ContactOwnerBirthdayRemindTest{
                                     ' ? ' + eachDayRepeat.year();
 
 
-        String jobId =  System.schedule('test', scheduleExpression, new ContactOwnerBirthdayRemind());
+        String jobId =  System.schedule('test', scheduleExpression, new ContactOwnerBirthdayRemindSchedule());
 
         CronTrigger ct = [SELECT Id, CronExpression, TimesTriggered, NextFireTime FROM CronTrigger WHERE id = :jobId];
 
