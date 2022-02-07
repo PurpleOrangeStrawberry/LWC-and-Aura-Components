@@ -1,0 +1,34 @@
+<aura:component implements="force:appHostable, flexipage:availableForAllPageTypes">
+    
+    <aura:attribute name="intakeId" type="String" default=""/>
+    <aura:attribute name="intakeIdCheck" type="String" default=""/>
+
+    <aura:attribute name="apiNames" type="String" default=""/>
+    <aura:attribute name="apiSplitedNames" type="String[]" default=""/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+
+    <lightning:recordEditForm objectApiName="Intake__c">
+
+        <lightning:inputField fieldName="Intake_Lookup__c" value="{!v.intakeId}" 
+        onchange="{!c.handleIntackeChange}"/>
+
+        <lightning:recordEditForm objectApiName="Intake__c" recordId="{!v.intakeId}">
+                <aura:iteration items="{!v.apiSplitedNames}" var="field">
+                    <lightning:inputField fieldName="{!field}"/>
+                </aura:iteration>
+
+                <aura:if isTrue="{!not(empty(v.intakeId))}">
+                    <lightning:button class="slds-m-top_small" type="submit" label="Save Record"/>
+                <aura:set attribute="else">
+                    <lightning:button class="slds-m-top_small" type="submit" label="Create Record"/>
+                </aura:set>
+              </aura:if> 
+
+        </lightning:recordEditForm>
+        
+    </lightning:recordEditForm>
+
+    
+</aura:component>
